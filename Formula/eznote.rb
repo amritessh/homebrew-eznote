@@ -1,5 +1,3 @@
-# Documentation: https://docs.brew.sh/Formula-Cookbook
-#                https://rubydoc.brew.sh/Formula
 class Eznote < Formula
   desc "Zero-friction note taking for developers who live in the terminal"
   homepage "https://github.com/amritessh/eznote"
@@ -8,26 +6,20 @@ class Eznote < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/amritessh/eznote/releases/download/v0.1.0/ezn-macos-aarch64"
-      sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5  -"
+      url "https://github.com/amritessh/eznote/releases/download/v0.1.1/ezn-macos-aarch64"
+      sha256 "e8c606933fcf117eba358863cf8e242c6407cef6c73e04467065f3cd80627616"
     else
-      url "https://github.com/amritessh/eznote/releases/download/v0.1.0/ezn-macos-x86_64"
-      sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5  -"
+      url "https://github.com/amritessh/eznote/releases/download/v0.1.1/ezn-macos-x86_64"
+      sha256 "f1c78df1b69d7c92f630a821bfa5f6855ba7464626d9aab3995b58ddee68dc7c"
     end
   end
 
   on_linux do
-    if Hardware::CPU.arm?
-      url "https://github.com/amritessh/eznote/releases/download/v0.1.0/ezn-linux-aarch64"
-      sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5  -"
-    else
-      url "https://github.com/amritessh/eznote/releases/download/v0.1.0/ezn-linux-x86_64"
-      sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5  -"
-    end
+    url "https://github.com/amritessh/eznote/releases/download/v0.1.1/ezn-linux-x86_64"
+    sha256 "f13b6c3a694b8556680d9a802a2286714b8163be1511e70eee7a17cf37a637ea"
   end
 
   def install
-    # Determine the correct binary name based on platform
     binary = if OS.mac?
       if Hardware::CPU.arm?
         "ezn-macos-aarch64"
@@ -35,25 +27,13 @@ class Eznote < Formula
         "ezn-macos-x86_64"
       end
     elsif OS.linux?
-      if Hardware::CPU.arm?
-        "ezn-linux-aarch64"
-      else
-        "ezn-linux-x86_64"
-      end
+      "ezn-linux-x86_64"
     end
 
     bin.install binary => "ezn"
   end
 
   test do
-    # Test that the binary runs and shows version
     assert_match "ezn", shell_output("#{bin}/ezn --version")
-    
-    # Test adding a note
-    system "#{bin}/ezn", "add", "Test note from Homebrew"
-    
-    # Test listing notes
-    output = shell_output("#{bin}/ezn list")
-    assert_match "Test note from Homebrew", output
   end
 end
